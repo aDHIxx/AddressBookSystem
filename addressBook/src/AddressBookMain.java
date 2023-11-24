@@ -137,6 +137,22 @@ class AddressBook {
             System.out.println("Contact not found.");
         }
     }
+    /*
+     * @name: deleteContact
+     * @desc: Used to delete an existing contact in the address book
+     * @param existingContact - Contact to be deleted
+     * @return: none
+     */
+    public void deleteContact(Contact contactToDelete) {
+        if (contacts.contains(contactToDelete)) {
+            contacts.remove(contactToDelete);
+            System.out.println("Contact deleted successfully!");
+        } else {
+            System.out.println("Contact not found.");
+        }
+    }
+
+
 }
 /*
  * @name: AddressBookMain
@@ -146,8 +162,9 @@ public class AddressBookMain {
 
     private static final int ADD_CONTACT = 1;
     private static final int EDIT_CONTACT = 2;
-    private static final int DISPLAY_CONTACTS = 3;
-    private static final int EXIT = 4;
+    private static final int DELETE_CONTACT = 3;
+    private static final int DISPLAY_CONTACTS = 4;
+    private static final int EXIT = 5;
 
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program!");
@@ -159,8 +176,9 @@ public class AddressBookMain {
             System.out.print("Select an option: \t");
             System.out.print("1. Add Contact \t");
             System.out.print("2. Edit Contact \t");
-            System.out.print("3. Display Contacts \t");
-            System.out.println("4. Exit");
+            System.out.print("3. Delete Contact \t");
+            System.out.print("4. Display Contacts \t");
+            System.out.println("5. Exit");
 
 
             int choice = scanner.nextInt();
@@ -224,10 +242,24 @@ public class AddressBookMain {
 
                         System.out.println("Contact edited successfully!");
                     } else {
-                        System.out.println("Contact not found. Edit failed.");
+                        System.out.println("Contact not found.");
                     }
                     break;
+                case DELETE_CONTACT:
+                    System.out.println("Enter contact details to delete:");
+                    System.out.print("First Name: ");
+                    String deleteFirstName = scanner.next();
+                    System.out.print("Last Name: ");
+                    String deleteLastName = scanner.next();
 
+                    Contact contactToDelete = getContactByName(addressBook.getContacts(), deleteFirstName, deleteLastName);
+
+                    if (contactToDelete != null) {
+                        addressBook.deleteContact(contactToDelete);
+                    } else {
+                        System.out.println("Contact not found.");
+                    }
+                    break;
                 case DISPLAY_CONTACTS:
                     System.out.println("Address Book");
                     System.out.println("============");
