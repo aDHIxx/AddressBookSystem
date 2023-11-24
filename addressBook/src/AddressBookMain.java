@@ -37,6 +37,56 @@ class Contact {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
+    /*
+     * @name: editContact
+     * @desc: Used to edit an existing contact's details
+     * @param newContact - Contact with updated details
+     * @return: none
+     */
+    public void editContact(Contact newContact) {
+        this.firstName = newContact.getFirstName();
+        this.lastName = newContact.getLastName();
+        this.address = newContact.getAddress();
+        this.city = newContact.getCity();
+        this.state = newContact.getState();
+        this.zip = newContact.getZip();
+        this.phoneNumber = newContact.getPhoneNumber();
+        this.email = newContact.getEmail();
+    }
+
+    String getEmail() {
+        return email;
+    }
+
+    long getPhoneNumber() {
+        return phoneNumber;
+
+    }
+
+    int getZip() {
+        return zip;
+    }
+
+    String getState() {
+        return state;
+    }
+
+    String getCity() {
+        return city;
+    }
+
+    String getAddress() {
+        return address;
+    }
+
+    String getLastName() {
+        return lastName;
+    }
+
+    String getFirstName() {
+        return firstName;
+    }
 }
 /*
  * @name: AddressBook
@@ -68,6 +118,25 @@ class AddressBook {
     public List<Contact> getContacts() {
         return contacts;
     }
+
+    /*
+     * @name: editContact
+     * @desc: Used to edit an existing contact in the address book
+     * @param existingContact - Contact to be edited
+     * @param updatedContact - Contact with updated details
+     * @return: none
+     */
+    public void editContact(Contact existingContact, Contact updatedContact) {
+
+        if (contacts.contains(existingContact)) {
+
+            contacts.remove(existingContact);
+            contacts.add(updatedContact);
+            System.out.println("Contact edited successfully!");
+        } else {
+            System.out.println("Contact not found.");
+        }
+    }
 }
 /*
  * @name: AddressBookMain
@@ -76,8 +145,9 @@ class AddressBook {
 public class AddressBookMain {
 
     private static final int ADD_CONTACT = 1;
-    private static final int DISPLAY_CONTACT = 2;
-    private static final int EXIT = 2;
+    private static final int EDIT_CONTACT = 2;
+    private static final int DISPLAY_CONTACTS = 3;
+    private static final int EXIT = 4;
 
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program!");
@@ -88,7 +158,10 @@ public class AddressBookMain {
         while (true) {
             System.out.print("Select an option: \t");
             System.out.print("1. Add Contact \t");
-            System.out.println("2. Exit");
+            System.out.print("2. Edit Contact \t");
+            System.out.print("3. Display Contacts \t");
+            System.out.println("4. Exit");
+
 
             int choice = scanner.nextInt();
 
@@ -117,6 +190,50 @@ public class AddressBookMain {
 
                     System.out.println("Contact added successfully!");
                     break;
+                case EDIT_CONTACT:
+                    System.out.println("Enter contact details to edit:");
+                    System.out.print("First Name: ");
+                    String editFirstName = scanner.next();
+                    System.out.print("Last Name: ");
+                    String editLastName = scanner.next();
+
+                    Contact existingContact = getContactByName(addressBook.getContacts(), editFirstName, editLastName);
+
+                    if (existingContact != null) {
+                        System.out.println("Enter updated contact details:");
+                        System.out.print("First Name: ");
+                        String editedfirstName = scanner.next();
+                        System.out.print("Last Name: ");
+                        String editedlastName = scanner.next();
+                        System.out.print("Address: ");
+                        String editedaddress = scanner.next();
+                        System.out.print("City: ");
+                        String editedcity = scanner.next();
+                        System.out.print("State: ");
+                        String editedstate = scanner.next();
+                        System.out.print("ZIP: ");
+                        int editedzip = scanner.nextInt();
+                        System.out.print("Phone Number: ");
+                        long editedphoneNumber = scanner.nextLong();
+                        System.out.print("Email: ");
+                        String editedemail = scanner.next();
+
+                        Contact editedContact = new Contact(editedfirstName, editedlastName, editedaddress, editedcity, editedstate, editedzip, editedphoneNumber, editedemail);
+
+                        existingContact.editContact(editedContact);
+
+                        System.out.println("Contact edited successfully!");
+                    } else {
+                        System.out.println("Contact not found. Edit failed.");
+                    }
+                    break;
+
+                case DISPLAY_CONTACTS:
+                    System.out.println("Address Book");
+                    System.out.println("============");
+                    displayContacts(addressBook.getContacts());
+                    break;
+
                 case EXIT:
                     System.out.println("Exiting !");
                     System.exit(0);
@@ -127,5 +244,27 @@ public class AddressBookMain {
         }
     }
 
+    private static void displayContacts(List<Contact> contacts) {
+        int i=0;
+        for (Contact contact : contacts) { //had to make it package private
+            System.out.println("Contact "+(i++)+"\n-----------\nName: " + contact.getFirstName() + " " + contact.getLastName()+
+                    "\nAddress: " + contact.getAddress() +
+                    "\tCity: " + contact.getCity() +
+                    "\tState: " + contact.getState() +
+                    "\tZIP: " + contact.getZip() +
+                    "\nPhone Number: " + contact.getPhoneNumber() +
+                    "\tEmail: " + contact.getEmail());
+            System.out.println("----------------------------------------------------------------------");
 
+        }
+    }
+
+    private static Contact getContactByName(List<Contact> contacts, String firstName, String lastName) {
+        for (Contact contact : contacts) {
+            if (contact.getFirstName().equalsIgnoreCase(firstName) && contact.getLastName().equalsIgnoreCase(lastName)) {
+                return contact;
+            }
+        }
+        return null;
+    }
 }
