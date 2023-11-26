@@ -185,28 +185,7 @@ public class AddressBookMain {
 
             switch (choice) {
                 case ADD_CONTACT:
-                    System.out.println("Enter contact details:");
-                    System.out.print("First Name: ");
-                    String firstName = scanner.next();
-                    System.out.print("Last Name: ");
-                    String lastName = scanner.next();
-                    System.out.print("Address: ");
-                    String address = scanner.next();
-                    System.out.print("City: ");
-                    String city = scanner.next();
-                    System.out.print("State: ");
-                    String state = scanner.next();
-                    System.out.print("ZIP: ");
-                    int zip = scanner.nextInt();
-                    System.out.print("Phone Number: ");
-                    long phoneNumber = scanner.nextLong();
-                    System.out.print("Email: ");
-                    String email = scanner.next();
-
-                    Contact newContact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
-                    addressBook.addContact(newContact);
-
-                    System.out.println("Contact added successfully!");
+                    addContact(addressBook, scanner);
                     break;
                 case EDIT_CONTACT:
                     System.out.println("Enter contact details to edit:");
@@ -277,9 +256,9 @@ public class AddressBookMain {
     }
 
     private static void displayContacts(List<Contact> contacts) {
-        int i=0;
+        int i = 0;
         for (Contact contact : contacts) { //had to make it package private
-            System.out.println("Contact "+(i++)+"\n-----------\nName: " + contact.getFirstName() + " " + contact.getLastName()+
+            System.out.println("Contact " + (++i) + "\n-----------\nName: " + contact.getFirstName() + " " + contact.getLastName() +
                     "\nAddress: " + contact.getAddress() +
                     "\tCity: " + contact.getCity() +
                     "\tState: " + contact.getState() +
@@ -291,6 +270,13 @@ public class AddressBookMain {
         }
     }
 
+    /*  @name: getContactByName
+     *  @desc: Used to get a contact by name
+     *  @param contacts - List of contacts
+     *         firstName - First name of the contact
+     *         lastName - Last name of the contact
+     *  @return: Contact
+     */
     private static Contact getContactByName(List<Contact> contacts, String firstName, String lastName) {
         for (Contact contact : contacts) {
             if (contact.getFirstName().equalsIgnoreCase(firstName) && contact.getLastName().equalsIgnoreCase(lastName)) {
@@ -298,5 +284,46 @@ public class AddressBookMain {
             }
         }
         return null;
+    }
+
+    /*
+     * @name: addContact
+     * @desc: Used to add a new contact to the address book
+     * @param addressBook - Address book to which the contact is to be added
+     *        scanner - Scanner object to get input from user
+     * @return: none
+     */
+    private static void addContact(AddressBook addressBook, Scanner scanner) {
+        while (true) {
+            System.out.println("Enter contact details:");
+            System.out.print("First Name: ");
+            String firstName = scanner.next();
+            System.out.print("Last Name: ");
+            String lastName = scanner.next();
+            System.out.print("Address: ");
+            String address = scanner.next();
+            System.out.print("City: ");
+            String city = scanner.next();
+            System.out.print("State: ");
+            String state = scanner.next();
+            System.out.print("ZIP: ");
+            int zip = scanner.nextInt();
+            System.out.print("Phone Number: ");
+            long phoneNumber = scanner.nextLong();
+            System.out.print("Email: ");
+            String email = scanner.next();
+
+            Contact newContact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
+            addressBook.addContact(newContact);
+
+            System.out.println("Contact added successfully!");
+
+            System.out.print("Do you want to add another contact? (1 for yes, 0 for no): ");
+            int addAnother = scanner.nextInt();
+
+            if (addAnother != 1) {
+                break;
+            }
+        }
     }
 }
