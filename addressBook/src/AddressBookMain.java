@@ -1,10 +1,8 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /*
- * @name: Contact
- * @desc: Used to store contact details of a person.
+ @name: Contact
+ @desc: Contact class to store contact details
  */
 class Contact {
     private String firstName;
@@ -17,15 +15,9 @@ class Contact {
     private String email;
 
     /*
-     * Constructor for Contact class
-     * @param firstName
-     * @param lastName
-     * @param address
-     * @param city
-     * @param state
-     * @param zip
-     * @param phoneNumber
-     * @param email
+     @name: Contact
+     @desc: Constructor to initialize contact details
+     @param: firstName, lastName, address, city, state, zip, phoneNumber, email
      */
     public Contact(String firstName, String lastName, String address, String city, String state, int zip, long phoneNumber, String email) {
         this.firstName = firstName;
@@ -39,10 +31,10 @@ class Contact {
     }
 
     /*
-     * @name: editContact
-     * @desc: Used to edit an existing contact's details
-     * @param newContact - Contact with updated details
-     * @return: none
+    @name: editContact
+    @desc: to edit contact details
+    @param: newContact
+    @return: void
      */
     public void editContact(Contact newContact) {
         this.firstName = newContact.getFirstName();
@@ -54,82 +46,81 @@ class Contact {
         this.phoneNumber = newContact.getPhoneNumber();
         this.email = newContact.getEmail();
     }
-
-    String getEmail() {
+    //getter methods
+    public String getEmail() {
         return email;
     }
 
-    long getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
-
     }
 
-    int getZip() {
+    public int getZip() {
         return zip;
     }
 
-    String getState() {
+    public String getState() {
         return state;
     }
 
-    String getCity() {
+    public String getCity() {
         return city;
     }
 
-    String getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
-    String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 }
+
 /*
- * @name: AddressBook
- * @desc: Used to store contacts in an address book.
+ @name: AddressBook
+ @desc: AddressBook class to store contacts
  */
 class AddressBook {
     private List<Contact> contacts;
 
     /*
-     * Constructor to initialize the address book.
+     @name: AddressBook
+     @desc: Constructor to initialize contacts
      */
     public AddressBook() {
         contacts = new ArrayList<>();
     }
+
     /*
-     * @name: addContact
-     * @desc: Used to add a new contact to the address book
-     * @param newContact - Contact to be added
-     * @return: none
+     @name: addContact
+     @desc: add contact
+     @param: newContact
+     @return: void
      */
     public void addContact(Contact newContact) {
         contacts.add(newContact);
     }
+
     /*
-     * @name: getContacts
-     * @desc: Used to get all the contacts in the address book
-     * @return: List of contacts
+     @name: getContacts
+     @desc: get contacts
+     @return: contacts
      */
     public List<Contact> getContacts() {
         return contacts;
     }
-
     /*
-     * @name: editContact
-     * @desc: Used to edit an existing contact in the address book
-     * @param existingContact - Contact to be edited
-     * @param updatedContact - Contact with updated details
-     * @return: none
+     @name: editContact
+     @desc: edit contact
+     @param: existingContact, updatedContact
+     @return: void
      */
     public void editContact(Contact existingContact, Contact updatedContact) {
-
         if (contacts.contains(existingContact)) {
-
             contacts.remove(existingContact);
             contacts.add(updatedContact);
             System.out.println("Contact edited successfully!");
@@ -138,10 +129,10 @@ class AddressBook {
         }
     }
     /*
-     * @name: deleteContact
-     * @desc: Used to delete an existing contact in the address book
-     * @param existingContact - Contact to be deleted
-     * @return: none
+     @name: deleteContact
+     @desc: delete contact
+     @param: contactToDelete
+     @return: void
      */
     public void deleteContact(Contact contactToDelete) {
         if (contacts.contains(contactToDelete)) {
@@ -151,100 +142,72 @@ class AddressBook {
             System.out.println("Contact not found.");
         }
     }
-
-
 }
 /*
- * @name: AddressBookMain
- * @desc: Main class to run the program.
+ @name: AddressBookMain
+ @desc: AddressBookMain class to perform operations on AddressBook
  */
 public class AddressBookMain {
+    private static final int ADD_ADDRESS_BOOK = 1;
+    private static final int SELECT_ADDRESS_BOOK = 2;
+    private static final int ADD_CONTACT = 3;
+    private static final int EDIT_CONTACT = 4;
+    private static final int DELETE_CONTACT = 5;
+    private static final int DISPLAY_CONTACTS = 6;
+    private static final int PRINT_ADDRESS_BOOKS = 7;
+    private static final int EXIT = 8;
 
-    private static final int ADD_CONTACT = 1;
-    private static final int EDIT_CONTACT = 2;
-    private static final int DELETE_CONTACT = 3;
-    private static final int DISPLAY_CONTACTS = 4;
-    private static final int EXIT = 5;
 
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program!");
-
-        AddressBook addressBook = new AddressBook();
+        //creating a hashmap to store address books
+        //key: address book name, value: address book
+        Map<String, AddressBook> addressBooks = new HashMap<>();
         Scanner scanner = new Scanner(System.in);
+        AddressBook currentAddressBook = null;
 
         while (true) {
             System.out.print("Select an option: \t");
-            System.out.print("1. Add Contact \t");
-            System.out.print("2. Edit Contact \t");
-            System.out.print("3. Delete Contact \t");
-            System.out.print("4. Display Contacts \t");
-            System.out.println("5. Exit");
-
+            System.out.print("1. Add Address Book \t");
+            System.out.print("2. Select Address Book \t");
+            System.out.print("3. Add Contact \t");
+            System.out.print("4. Edit Contact \t");
+            System.out.print("5. Delete Contact \t");
+            System.out.print("6. Display Contacts \t");
+            System.out.print("7. Display Address Books \t");
+            System.out.println("8. Exit");
 
             int choice = scanner.nextInt();
 
             switch (choice) {
+                case ADD_ADDRESS_BOOK:
+                    addAddressBook(addressBooks, scanner);
+                    break;
+                case SELECT_ADDRESS_BOOK:
+                    printAvailableAddressBooks(addressBooks);
+                    currentAddressBook = selectAddressBook(addressBooks, scanner);
+                    break;
                 case ADD_CONTACT:
-                    addContact(addressBook, scanner);
+                    if (currentAddressBook != null) {
+                        addContact(currentAddressBook, scanner);
+                    } else {
+                        System.out.println("Please select an address book first.");
+                    }
                     break;
                 case EDIT_CONTACT:
-                    System.out.println("Enter contact details to edit:");
-                    System.out.print("First Name: ");
-                    String editFirstName = scanner.next();
-                    System.out.print("Last Name: ");
-                    String editLastName = scanner.next();
-
-                    Contact existingContact = getContactByName(addressBook.getContacts(), editFirstName, editLastName);
-
-                    if (existingContact != null) {
-                        System.out.println("Enter updated contact details:");
-                        System.out.print("First Name: ");
-                        String editedfirstName = scanner.next();
-                        System.out.print("Last Name: ");
-                        String editedlastName = scanner.next();
-                        System.out.print("Address: ");
-                        String editedaddress = scanner.next();
-                        System.out.print("City: ");
-                        String editedcity = scanner.next();
-                        System.out.print("State: ");
-                        String editedstate = scanner.next();
-                        System.out.print("ZIP: ");
-                        int editedzip = scanner.nextInt();
-                        System.out.print("Phone Number: ");
-                        long editedphoneNumber = scanner.nextLong();
-                        System.out.print("Email: ");
-                        String editedemail = scanner.next();
-
-                        Contact editedContact = new Contact(editedfirstName, editedlastName, editedaddress, editedcity, editedstate, editedzip, editedphoneNumber, editedemail);
-
-                        existingContact.editContact(editedContact);
-
-                        System.out.println("Contact edited successfully!");
-                    } else {
-                        System.out.println("Contact not found.");
-                    }
+                    assert currentAddressBook != null;
+                    editContact(currentAddressBook, scanner);
                     break;
                 case DELETE_CONTACT:
-                    System.out.println("Enter contact details to delete:");
-                    System.out.print("First Name: ");
-                    String deleteFirstName = scanner.next();
-                    System.out.print("Last Name: ");
-                    String deleteLastName = scanner.next();
-
-                    Contact contactToDelete = getContactByName(addressBook.getContacts(), deleteFirstName, deleteLastName);
-
-                    if (contactToDelete != null) {
-                        addressBook.deleteContact(contactToDelete);
-                    } else {
-                        System.out.println("Contact not found.");
-                    }
+                    assert currentAddressBook != null;
+                    deleteContact(currentAddressBook, scanner);
                     break;
                 case DISPLAY_CONTACTS:
-                    System.out.println("Address Book");
-                    System.out.println("============");
-                    displayContacts(addressBook.getContacts());
+                    displayContacts(currentAddressBook.getContacts());
                     break;
-
+                case PRINT_ADDRESS_BOOKS:
+                    printAddressBooks(addressBooks);
+                    break;
                 case EXIT:
                     System.out.println("Exiting !");
                     System.exit(0);
@@ -254,44 +217,78 @@ public class AddressBookMain {
             }
         }
     }
-
-    private static void displayContacts(List<Contact> contacts) {
-        int i = 0;
-        for (Contact contact : contacts) { //had to make it package private
-            System.out.println("Contact " + (++i) + "\n-----------\nName: " + contact.getFirstName() + " " + contact.getLastName() +
-                    "\nAddress: " + contact.getAddress() +
-                    "\tCity: " + contact.getCity() +
-                    "\tState: " + contact.getState() +
-                    "\tZIP: " + contact.getZip() +
-                    "\nPhone Number: " + contact.getPhoneNumber() +
-                    "\tEmail: " + contact.getEmail());
-            System.out.println("----------------------------------------------------------------------");
-
-        }
-    }
-
-    /*  @name: getContactByName
-     *  @desc: Used to get a contact by name
-     *  @param contacts - List of contacts
-     *         firstName - First name of the contact
-     *         lastName - Last name of the contact
-     *  @return: Contact
-     */
-    private static Contact getContactByName(List<Contact> contacts, String firstName, String lastName) {
-        for (Contact contact : contacts) {
-            if (contact.getFirstName().equalsIgnoreCase(firstName) && contact.getLastName().equalsIgnoreCase(lastName)) {
-                return contact;
-            }
-        }
-        return null;
-    }
-
     /*
-     * @name: addContact
-     * @desc: Used to add a new contact to the address book
-     * @param addressBook - Address book to which the contact is to be added
-     *        scanner - Scanner object to get input from user
-     * @return: none
+     @name: printAvailableAddressBooks
+     @desc: print available address books
+     @param: addressBooks
+     @return: void
+     */
+    private static void printAddressBooks(Map<String, AddressBook> addressBooks) {
+        System.out.println("All Address Books and Contacts:");
+        for (Map.Entry<String, AddressBook> entry : addressBooks.entrySet()) {
+            String addressBookName = entry.getKey();
+            AddressBook addressBook = entry.getValue();
+
+            System.out.println("Address Book: " + addressBookName);
+            displayContacts(addressBook.getContacts());
+            System.out.println("=================================");
+        }
+    }
+    /*
+     @name: printAvailableAddressBooks
+     @desc: print available address books
+     @param: addressBooks
+     @return: void
+     */
+    private static void printAvailableAddressBooks(Map<String, AddressBook> addressBooks) {
+        System.out.println("Available Address Books:");
+        for (String addressBookName : addressBooks.keySet()) {
+            System.out.println(addressBookName);
+        }
+    }
+    /*
+     @name: addAddressBook
+     @desc: add address book
+     @param: addressBooks, scanner
+     @return: void
+     */
+    private static void addAddressBook(Map<String, AddressBook> addressBooks, Scanner scanner) {
+        System.out.print("Enter the name of the new Address Book: ");
+        String addressBookName = scanner.next();
+
+        if (!addressBooks.containsKey(addressBookName)) {
+            AddressBook newAddressBook = new AddressBook();
+            addressBooks.put(addressBookName, newAddressBook);
+            System.out.println("Address Book '" + addressBookName + "' added successfully!");
+        } else {
+            System.out.println("Address Book with the same name already exists.");
+        }
+    }
+    /*
+     @name: selectAddressBook
+     @desc: select address book
+     @param: addressBooks, scanner
+     @return: selectedAddressBook
+     */
+    private static AddressBook selectAddressBook(Map<String, AddressBook> addressBooks, Scanner scanner) {
+        System.out.print("Enter the name of the Address Book: ");
+        String addressBookName = scanner.next();
+
+        AddressBook selectedAddressBook = addressBooks.get(addressBookName);
+
+        if (selectedAddressBook != null) {
+            System.out.println("Address Book '" + addressBookName + "' selected.");
+        } else {
+            System.out.println("Address Book not found.");
+        }
+
+        return selectedAddressBook;
+    }
+    /*
+     @name: addContact
+     @desc: add contact
+     @param: addressBook, scanner
+     @return: void
      */
     private static void addContact(AddressBook addressBook, Scanner scanner) {
         while (true) {
@@ -325,5 +322,102 @@ public class AddressBookMain {
                 break;
             }
         }
+    }
+    /*
+     @name: editContact
+     @desc: edit contact
+     @param: addressBook, scanner
+     @return: void
+     */
+    private static void editContact(AddressBook addressBook, Scanner scanner) {
+        System.out.println("Enter contact details to edit:");
+        System.out.print("First Name: ");
+        String editFirstName = scanner.next();
+        System.out.print("Last Name: ");
+        String editLastName = scanner.next();
+
+        Contact existingContact = getContactByName(addressBook.getContacts(), editFirstName, editLastName);
+
+        if (existingContact != null) {
+            System.out.println("Enter updated contact details:");
+            System.out.print("First Name: ");
+            String editedFirstName = scanner.next();
+            System.out.print("Last Name: ");
+            String editedLastName = scanner.next();
+            System.out.print("Address: ");
+            String editedAddress = scanner.next();
+            System.out.print("City: ");
+            String editedCity = scanner.next();
+            System.out.print("State: ");
+            String editedState = scanner.next();
+            System.out.print("ZIP: ");
+            int editedZip = scanner.nextInt();
+            System.out.print("Phone Number: ");
+            long editedPhoneNumber = scanner.nextLong();
+            System.out.print("Email: ");
+            String editedEmail = scanner.next();
+
+            Contact editedContact = new Contact(editedFirstName, editedLastName, editedAddress, editedCity, editedState, editedZip, editedPhoneNumber, editedEmail);
+
+            existingContact.editContact(editedContact);
+
+            System.out.println("Contact edited successfully!");
+        } else {
+            System.out.println("Contact not found.");
+        }
+    }
+    /*
+     @name: deleteContact
+     @desc: delete contact
+     @param: addressBook, scanner
+     @return: void
+     */
+    private static void deleteContact(AddressBook addressBook, Scanner scanner) {
+        System.out.println("Enter contact details to delete:");
+        System.out.print("First Name: ");
+        String deleteFirstName = scanner.next();
+        System.out.print("Last Name: ");
+        String deleteLastName = scanner.next();
+
+        Contact contactToDelete = getContactByName(addressBook.getContacts(), deleteFirstName, deleteLastName);
+
+        if (contactToDelete != null) {
+            addressBook.deleteContact(contactToDelete);
+        } else {
+            System.out.println("Contact not found.");
+        }
+    }
+    /*
+     @name: displayContacts
+     @desc: display contacts
+     @param: contacts
+     @return: void
+     */
+    private static void displayContacts(List<Contact> contacts) {
+        int i = 0;
+        for (Contact contact : contacts) {
+            System.out.println("Contact " + (++i) + "\n-----------\nName: " + contact.getFirstName() + " " + contact.getLastName() +
+                    "\nAddress: " + contact.getAddress() +
+                    "\tCity: " + contact.getCity() +
+                    "\tState: " + contact.getState() +
+                    "\tZIP: " + contact.getZip() +
+                    "\nPhone Number: " + contact.getPhoneNumber() +
+                    "\tEmail: " + contact.getEmail());
+            System.out.println("----------------------------------------------------------------------");
+        }
+    }
+    /*
+    @name: getContactByName
+    @desc: get contact by name
+    @param: contacts, firstName, lastName
+    @return: contact
+     */
+    private static Contact getContactByName(List<Contact> contacts, String firstName, String lastName) {
+        for (Contact contact : contacts) {
+            if (contact.getFirstName().equalsIgnoreCase(firstName) && contact.getLastName().equalsIgnoreCase(lastName)) {
+                return contact;
+            }
+        }
+        return null;
     }
 }
