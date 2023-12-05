@@ -16,7 +16,9 @@ public class AddressBookMain {
     private static final int DISPLAY_CONTACTS = 6;
     private static final int PRINT_ADDRESS_BOOKS = 7;
     private static final int SEARCH_PERSON_CITY_STATE = 8;
-    private static final int EXIT = 9;
+    private static final int VIEW_PERSONS_CITY_STATE = 9;
+    private static final int EXIT = 10;
+
 
 
     public static void main(String[] args) {
@@ -73,7 +75,9 @@ public class AddressBookMain {
                 case SEARCH_PERSON_CITY_STATE:
                     searchAndDisplayPersonByCityOrState(addressBooks, scanner);
                     break;
-
+                case VIEW_PERSONS_CITY_STATE:
+                    viewPersonsByCityOrState(addressBooks, scanner);
+                    break;
                 case EXIT:
                     System.out.println("Exiting !");
                     System.exit(0);
@@ -302,5 +306,33 @@ public class AddressBookMain {
                 .collect(Collectors.toList());
 
         displayContacts(searchResult);
+    }
+    /*
+     * @name: viewPersonsByCityOrState
+     * @desc: view persons by city or state using dictionaries
+     * @param: addressBooks, scanner
+     * @return: void
+     */
+    private static void viewPersonsByCityOrState(Map<String, AddressBook> addressBooks, Scanner scanner) {
+        System.out.print("Enter City or State to view persons: ");
+        String cityOrState = scanner.next();
+
+        List<Contact> persons = new ArrayList<>();
+
+        for (AddressBook addressBook : addressBooks.values()) {
+            if (addressBook.getCityDictionary().containsKey(cityOrState)) {
+                persons.addAll(addressBook.getCityDictionary().get(cityOrState));
+            }
+
+            if (addressBook.getStateDictionary().containsKey(cityOrState)) {
+                persons.addAll(addressBook.getStateDictionary().get(cityOrState));
+            }
+        }
+
+        if (!persons.isEmpty()) {
+            displayContacts(persons);
+        } else {
+            System.out.println("No persons found in the specified city or state.");
+        }
     }
 }

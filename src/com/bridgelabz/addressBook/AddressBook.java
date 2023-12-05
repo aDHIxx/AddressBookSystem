@@ -1,7 +1,9 @@
 package com.bridgelabz.addressBook;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  * @name: AddressBook
@@ -9,6 +11,9 @@ import java.util.List;
  */
 class AddressBook {
     private List<Contact> contacts;
+    private Map<String, List<Contact>> cityDictionary;
+    private Map<String, List<Contact>> stateDictionary;
+
 
     /*
      @name: com.bridgelabz.addressBook.AddressBook
@@ -16,6 +21,8 @@ class AddressBook {
      */
     public AddressBook() {
         contacts = new ArrayList<>();
+        cityDictionary = new HashMap<>();
+        stateDictionary = new HashMap<>();
     }
 
     /*
@@ -30,6 +37,8 @@ class AddressBook {
 
         if (!isDuplicate) {
             contacts.add(newContact);
+            cityDictionary.computeIfAbsent(newContact.getCity(), k -> new ArrayList<>()).add(newContact);
+            stateDictionary.computeIfAbsent(newContact.getState(), k -> new ArrayList<>()).add(newContact);
             System.out.println("Contact added successfully!");
         } else {
             System.out.println("Duplicate entry! Contact with the same name already exists.");
@@ -73,4 +82,13 @@ class AddressBook {
             System.out.println("Contact not found.");
         }
     }
+
+    public Map<String, List<Contact>> getCityDictionary() {
+        return cityDictionary;
+    }
+
+    public Map<String, List<Contact>> getStateDictionary() {
+        return stateDictionary;
+    }
+
 }
