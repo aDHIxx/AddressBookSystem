@@ -3,6 +3,10 @@ package com.bridgelabz.addressBook;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * @name: AddressBook
+ * @desc: class to store contacts
+ */
 class AddressBook {
     private List<Contact> contacts;
 
@@ -21,7 +25,15 @@ class AddressBook {
      @return: void
      */
     public void addContact(Contact newContact) {
-        contacts.add(newContact);
+        boolean isDuplicate = contacts.stream()
+                .anyMatch(contact -> contact.equals(newContact));
+
+        if (!isDuplicate) {
+            contacts.add(newContact);
+            System.out.println("Contact added successfully!");
+        } else {
+            System.out.println("Duplicate entry! Contact with the same name already exists.");
+        }
     }
 
     /*

@@ -2,6 +2,10 @@ package com.bridgelabz.addressBook;
 
 import java.util.*;
 
+/*
+ * @name: AddressBookMain
+ * @desc: class to store address books
+ */
 public class AddressBookMain {
     private static final int ADD_ADDRESS_BOOK = 1;
     private static final int SELECT_ADDRESS_BOOK = 2;
@@ -167,8 +171,6 @@ public class AddressBookMain {
 
             Contact newContact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
             addressBook.addContact(newContact);
-
-            System.out.println("Contact added successfully!");
 
             System.out.print("Do you want to add another contact? (1 for yes, 0 for no): ");
             int addAnother = scanner.nextInt();

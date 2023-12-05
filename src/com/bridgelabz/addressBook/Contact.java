@@ -1,5 +1,11 @@
 package com.bridgelabz.addressBook;
 
+import java.util.Objects;
+
+/*
+ * @name: Contact
+ * @desc: class to store contact details
+ */
 class Contact {
     private String firstName;
     private String lastName;
@@ -73,6 +79,21 @@ class Contact {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    /*
+    @name: equals
+    @desc: to check if two contacts are equal
+    @param: obj
+    @return: boolean
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Contact contact = (Contact) obj;
+        return Objects.equals(firstName, contact.firstName) &&
+                Objects.equals(lastName, contact.lastName);
     }
 }
 
