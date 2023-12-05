@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
  * @desc: class to store address books
  */
 public class AddressBookMain {
+    static Scanner scanner = new Scanner(System.in);
     private static final int ADD_ADDRESS_BOOK = 1;
     private static final int SELECT_ADDRESS_BOOK = 2;
     private static final int ADD_CONTACT = 3;
@@ -19,7 +20,8 @@ public class AddressBookMain {
     private static final int VIEW_PERSONS_CITY_STATE = 9;
     private static final int GET_COUNT_BY_CITY_STATE =10 ;
     private static final int SORT_BY_NAME = 11;
-    private static final int EXIT = 12;
+    private static final int SORT_MENU = 12 ;
+    private static final int EXIT = 13;
 
 
 
@@ -28,7 +30,6 @@ public class AddressBookMain {
         //creating a hashmap to store address books
         //key: address book name, value: address book
         Map<String, AddressBook> addressBooks = new HashMap<>();
-        Scanner scanner = new Scanner(System.in);
         AddressBook currentAddressBook = null;
 
         while (true) {
@@ -89,6 +90,9 @@ public class AddressBookMain {
                 case SORT_BY_NAME:
                     assert currentAddressBook != null;
                     sortContactsByName(currentAddressBook.getContacts());
+                    break;
+                case SORT_MENU:
+                    handleSortMenu(currentAddressBook);
                     break;
                 case EXIT:
                     System.out.println("Exiting !");
@@ -396,4 +400,76 @@ public class AddressBookMain {
         displayContacts(contacts);
     }
 
+    /*
+     * @name: handleSortMenu
+     * @desc: handle the sorting sub-menu
+     * @param: currentAddressBook
+     * @return: void
+     */
+    private static void handleSortMenu(AddressBook currentAddressBook) {
+        final int SORT_BY_CITY = 1;
+        final int SORT_BY_STATE = 2;
+        final int SORT_BY_ZIP = 3;
+        System.out.println("Sorting Options:");
+        System.out.println("1. Sort by City");
+        System.out.println("2. Sort by State");
+        System.out.println("3. Sort by ZIP");
+        System.out.print("Enter your choice: ");
+        int sortChoice = scanner.nextInt();
+
+        switch (sortChoice) {
+            case SORT_BY_CITY:
+                assert currentAddressBook != null;
+                sortContactsByCity(currentAddressBook.getContacts());
+                break;
+
+            case SORT_BY_STATE:
+                assert currentAddressBook != null;
+                sortContactsByState(currentAddressBook.getContacts());
+                break;
+
+            case SORT_BY_ZIP:
+                assert currentAddressBook != null;
+                sortContactsByZip(currentAddressBook.getContacts());
+                break;
+
+            default:
+                System.out.println("Invalid sorting option.");
+        }
+    }
+    /*
+     * @name: sortContactsByCity
+     * @desc: sort contacts alphabetically by city
+     * @param: contacts
+     * @return: void
+     */
+    private static void sortContactsByCity(List<Contact> contacts) {
+        contacts.sort(Comparator.comparing(Contact::getCity));
+        System.out.println("Contacts sorted alphabetically by city:");
+        displayContacts(contacts);
+    }
+
+    /*
+     * @name: sortContactsByState
+     * @desc: sort contacts alphabetically by state
+     * @param: contacts
+     * @return: void
+     */
+    private static void sortContactsByState(List<Contact> contacts) {
+        contacts.sort(Comparator.comparing(Contact::getState));
+        System.out.println("Contacts sorted alphabetically by state:");
+        displayContacts(contacts);
+    }
+
+    /*
+     * @name: sortContactsByZip
+     * @desc: sort contacts numerically by ZIP
+     * @param: contacts
+     * @return: void
+     */
+    private static void sortContactsByZip(List<Contact> contacts) {
+        contacts.sort(Comparator.comparingInt(Contact::getZip));
+        System.out.println("Contacts sorted numerically by ZIP:");
+        displayContacts(contacts);
+    }
 }
