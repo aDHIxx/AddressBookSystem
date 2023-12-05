@@ -1,6 +1,7 @@
 package com.bridgelabz.addressBook;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /*
  * @name: AddressBookMain
@@ -14,7 +15,8 @@ public class AddressBookMain {
     private static final int DELETE_CONTACT = 5;
     private static final int DISPLAY_CONTACTS = 6;
     private static final int PRINT_ADDRESS_BOOKS = 7;
-    private static final int EXIT = 8;
+    private static final int SEARCH_PERSON_CITY_STATE = 8;
+    private static final int EXIT = 9;
 
 
     public static void main(String[] args) {
@@ -34,7 +36,8 @@ public class AddressBookMain {
             System.out.print("5. Delete contact \t");
             System.out.print("6. Display contacts \t");
             System.out.print("7. Display Address Books \t");
-            System.out.println("8. Exit");
+            System.out.print("8. Search Person by City or State \t");
+            System.out.println("9. Exit");
 
             int choice = scanner.nextInt();
 
@@ -67,6 +70,10 @@ public class AddressBookMain {
                 case PRINT_ADDRESS_BOOKS:
                     printAddressBooks(addressBooks);
                     break;
+                case SEARCH_PERSON_CITY_STATE:
+                    searchAndDisplayPersonByCityOrState(addressBooks, scanner);
+                    break;
+
                 case EXIT:
                     System.out.println("Exiting !");
                     System.exit(0);
@@ -276,5 +283,24 @@ public class AddressBookMain {
             }
         }
         return null;
+    }
+
+    /*
+     * @name: searchAndDisplayPersonByCityOrState
+     * @desc: search for a person in a city or state across multiple address books
+     *        and display the search result
+     * @param: addressBooks, scanner
+     * @return: void
+     */
+    private static void searchAndDisplayPersonByCityOrState(Map<String, AddressBook> addressBooks, Scanner scanner) {
+        System.out.print("Enter City or State to search: ");
+        String cityOrState = scanner.next();
+
+        List<Contact> searchResult = addressBooks.values().stream()
+                .flatMap(addressBook -> addressBook.getContacts().stream())
+                .filter(contact -> contact.getCity().equalsIgnoreCase(cityOrState) || contact.getState().equalsIgnoreCase(cityOrState))
+                .collect(Collectors.toList());
+
+        displayContacts(searchResult);
     }
 }
