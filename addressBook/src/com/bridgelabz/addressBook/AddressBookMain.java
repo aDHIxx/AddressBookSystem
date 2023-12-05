@@ -1,8 +1,10 @@
+package com.bridgelabz.addressBook;
+
 import java.util.*;
 
 /*
- @name: Contact
- @desc: Contact class to store contact details
+ @name: com.bridgelabz.addressBook.Contact
+ @desc: com.bridgelabz.addressBook.Contact class to store contact details
  */
 class Contact {
     private String firstName;
@@ -15,7 +17,7 @@ class Contact {
     private String email;
 
     /*
-     @name: Contact
+     @name: com.bridgelabz.addressBook.Contact
      @desc: Constructor to initialize contact details
      @param: firstName, lastName, address, city, state, zip, phoneNumber, email
      */
@@ -81,14 +83,14 @@ class Contact {
 }
 
 /*
- @name: AddressBook
- @desc: AddressBook class to store contacts
+ @name: com.bridgelabz.addressBook.AddressBook
+ @desc: com.bridgelabz.addressBook.AddressBook class to store contacts
  */
 class AddressBook {
     private List<Contact> contacts;
 
     /*
-     @name: AddressBook
+     @name: com.bridgelabz.addressBook.AddressBook
      @desc: Constructor to initialize contacts
      */
     public AddressBook() {
@@ -123,9 +125,9 @@ class AddressBook {
         if (contacts.contains(existingContact)) {
             contacts.remove(existingContact);
             contacts.add(updatedContact);
-            System.out.println("Contact edited successfully!");
+            System.out.println("com.bridgelabz.addressBook.Contact edited successfully!");
         } else {
-            System.out.println("Contact not found.");
+            System.out.println("com.bridgelabz.addressBook.Contact not found.");
         }
     }
     /*
@@ -137,15 +139,15 @@ class AddressBook {
     public void deleteContact(Contact contactToDelete) {
         if (contacts.contains(contactToDelete)) {
             contacts.remove(contactToDelete);
-            System.out.println("Contact deleted successfully!");
+            System.out.println("com.bridgelabz.addressBook.Contact deleted successfully!");
         } else {
-            System.out.println("Contact not found.");
+            System.out.println("com.bridgelabz.addressBook.Contact not found.");
         }
     }
 }
 /*
- @name: AddressBookMain
- @desc: AddressBookMain class to perform operations on AddressBook
+ @name: com.bridgelabz.addressBook.AddressBookMain
+ @desc: com.bridgelabz.addressBook.AddressBookMain class to perform operations on com.bridgelabz.addressBook.AddressBook
  */
 public class AddressBookMain {
     private static final int ADD_ADDRESS_BOOK = 1;
@@ -170,9 +172,9 @@ public class AddressBookMain {
             System.out.print("Select an option: \t");
             System.out.print("1. Add Address Book \t");
             System.out.print("2. Select Address Book \t");
-            System.out.print("3. Add Contact \t");
-            System.out.print("4. Edit Contact \t");
-            System.out.print("5. Delete Contact \t");
+            System.out.print("3. Add com.bridgelabz.addressBook.Contact \t");
+            System.out.print("4. Edit com.bridgelabz.addressBook.Contact \t");
+            System.out.print("5. Delete com.bridgelabz.addressBook.Contact \t");
             System.out.print("6. Display Contacts \t");
             System.out.print("7. Display Address Books \t");
             System.out.println("8. Exit");
@@ -313,7 +315,7 @@ public class AddressBookMain {
             Contact newContact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
             addressBook.addContact(newContact);
 
-            System.out.println("Contact added successfully!");
+            System.out.println("com.bridgelabz.addressBook.Contact added successfully!");
 
             System.out.print("Do you want to add another contact? (1 for yes, 0 for no): ");
             int addAnother = scanner.nextInt();
@@ -361,9 +363,9 @@ public class AddressBookMain {
 
             existingContact.editContact(editedContact);
 
-            System.out.println("Contact edited successfully!");
+            System.out.println("com.bridgelabz.addressBook.Contact edited successfully!");
         } else {
-            System.out.println("Contact not found.");
+            System.out.println("com.bridgelabz.addressBook.Contact not found.");
         }
     }
     /*
@@ -384,7 +386,7 @@ public class AddressBookMain {
         if (contactToDelete != null) {
             addressBook.deleteContact(contactToDelete);
         } else {
-            System.out.println("Contact not found.");
+            System.out.println("com.bridgelabz.addressBook.Contact not found.");
         }
     }
     /*
@@ -396,7 +398,7 @@ public class AddressBookMain {
     private static void displayContacts(List<Contact> contacts) {
         int i = 0;
         for (Contact contact : contacts) {
-            System.out.println("Contact " + (++i) + "\n-----------\nName: " + contact.getFirstName() + " " + contact.getLastName() +
+            System.out.println("com.bridgelabz.addressBook.Contact " + (++i) + "\n-----------\nName: " + contact.getFirstName() + " " + contact.getLastName() +
                     "\nAddress: " + contact.getAddress() +
                     "\tCity: " + contact.getCity() +
                     "\tState: " + contact.getState() +
