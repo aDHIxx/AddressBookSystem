@@ -2,153 +2,6 @@ package com.bridgelabz.addressBook;
 
 import java.util.*;
 
-/*
- @name: com.bridgelabz.addressBook.Contact
- @desc: com.bridgelabz.addressBook.Contact class to store contact details
- */
-class Contact {
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String city;
-    private String state;
-    private int zip;
-    private long phoneNumber;
-    private String email;
-
-    /*
-     @name: com.bridgelabz.addressBook.Contact
-     @desc: Constructor to initialize contact details
-     @param: firstName, lastName, address, city, state, zip, phoneNumber, email
-     */
-    public Contact(String firstName, String lastName, String address, String city, String state, int zip, long phoneNumber, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-    }
-
-    /*
-    @name: editContact
-    @desc: to edit contact details
-    @param: newContact
-    @return: void
-     */
-    public void editContact(Contact newContact) {
-        this.firstName = newContact.getFirstName();
-        this.lastName = newContact.getLastName();
-        this.address = newContact.getAddress();
-        this.city = newContact.getCity();
-        this.state = newContact.getState();
-        this.zip = newContact.getZip();
-        this.phoneNumber = newContact.getPhoneNumber();
-        this.email = newContact.getEmail();
-    }
-    //getter methods
-    public String getEmail() {
-        return email;
-    }
-
-    public long getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public int getZip() {
-        return zip;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-}
-
-/*
- @name: com.bridgelabz.addressBook.AddressBook
- @desc: com.bridgelabz.addressBook.AddressBook class to store contacts
- */
-class AddressBook {
-    private List<Contact> contacts;
-
-    /*
-     @name: com.bridgelabz.addressBook.AddressBook
-     @desc: Constructor to initialize contacts
-     */
-    public AddressBook() {
-        contacts = new ArrayList<>();
-    }
-
-    /*
-     @name: addContact
-     @desc: add contact
-     @param: newContact
-     @return: void
-     */
-    public void addContact(Contact newContact) {
-        contacts.add(newContact);
-    }
-
-    /*
-     @name: getContacts
-     @desc: get contacts
-     @return: contacts
-     */
-    public List<Contact> getContacts() {
-        return contacts;
-    }
-    /*
-     @name: editContact
-     @desc: edit contact
-     @param: existingContact, updatedContact
-     @return: void
-     */
-    public void editContact(Contact existingContact, Contact updatedContact) {
-        if (contacts.contains(existingContact)) {
-            contacts.remove(existingContact);
-            contacts.add(updatedContact);
-            System.out.println("com.bridgelabz.addressBook.Contact edited successfully!");
-        } else {
-            System.out.println("com.bridgelabz.addressBook.Contact not found.");
-        }
-    }
-    /*
-     @name: deleteContact
-     @desc: delete contact
-     @param: contactToDelete
-     @return: void
-     */
-    public void deleteContact(Contact contactToDelete) {
-        if (contacts.contains(contactToDelete)) {
-            contacts.remove(contactToDelete);
-            System.out.println("com.bridgelabz.addressBook.Contact deleted successfully!");
-        } else {
-            System.out.println("com.bridgelabz.addressBook.Contact not found.");
-        }
-    }
-}
-/*
- @name: com.bridgelabz.addressBook.AddressBookMain
- @desc: com.bridgelabz.addressBook.AddressBookMain class to perform operations on com.bridgelabz.addressBook.AddressBook
- */
 public class AddressBookMain {
     private static final int ADD_ADDRESS_BOOK = 1;
     private static final int SELECT_ADDRESS_BOOK = 2;
@@ -172,10 +25,10 @@ public class AddressBookMain {
             System.out.print("Select an option: \t");
             System.out.print("1. Add Address Book \t");
             System.out.print("2. Select Address Book \t");
-            System.out.print("3. Add com.bridgelabz.addressBook.Contact \t");
-            System.out.print("4. Edit com.bridgelabz.addressBook.Contact \t");
-            System.out.print("5. Delete com.bridgelabz.addressBook.Contact \t");
-            System.out.print("6. Display Contacts \t");
+            System.out.print("3. Add contact \t");
+            System.out.print("4. Edit contact \t");
+            System.out.print("5. Delete contact \t");
+            System.out.print("6. Display contacts \t");
             System.out.print("7. Display Address Books \t");
             System.out.println("8. Exit");
 
@@ -315,7 +168,7 @@ public class AddressBookMain {
             Contact newContact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
             addressBook.addContact(newContact);
 
-            System.out.println("com.bridgelabz.addressBook.Contact added successfully!");
+            System.out.println("Contact added successfully!");
 
             System.out.print("Do you want to add another contact? (1 for yes, 0 for no): ");
             int addAnother = scanner.nextInt();
@@ -363,9 +216,9 @@ public class AddressBookMain {
 
             existingContact.editContact(editedContact);
 
-            System.out.println("com.bridgelabz.addressBook.Contact edited successfully!");
+            System.out.println("Contact edited successfully!");
         } else {
-            System.out.println("com.bridgelabz.addressBook.Contact not found.");
+            System.out.println("Contact not found.");
         }
     }
     /*
@@ -386,7 +239,7 @@ public class AddressBookMain {
         if (contactToDelete != null) {
             addressBook.deleteContact(contactToDelete);
         } else {
-            System.out.println("com.bridgelabz.addressBook.Contact not found.");
+            System.out.println("Contact not found.");
         }
     }
     /*
@@ -398,7 +251,7 @@ public class AddressBookMain {
     private static void displayContacts(List<Contact> contacts) {
         int i = 0;
         for (Contact contact : contacts) {
-            System.out.println("com.bridgelabz.addressBook.Contact " + (++i) + "\n-----------\nName: " + contact.getFirstName() + " " + contact.getLastName() +
+            System.out.println("Contact " + (++i) + "\n-----------\nName: " + contact.getFirstName() + " " + contact.getLastName() +
                     "\nAddress: " + contact.getAddress() +
                     "\tCity: " + contact.getCity() +
                     "\tState: " + contact.getState() +
