@@ -17,8 +17,8 @@ public class AddressBookMain {
     private static final int PRINT_ADDRESS_BOOKS = 7;
     private static final int SEARCH_PERSON_CITY_STATE = 8;
     private static final int VIEW_PERSONS_CITY_STATE = 9;
-    private static final int EXIT = 10;
-
+    private static final int GET_COUNT_BY_CITY_STATE =10 ;
+    private static final int EXIT = 11;
 
 
     public static void main(String[] args) {
@@ -30,16 +30,18 @@ public class AddressBookMain {
         AddressBook currentAddressBook = null;
 
         while (true) {
-            System.out.print("Select an option: \t");
+            System.out.print("Select an option: \n");
             System.out.print("1. Add Address Book \t");
             System.out.print("2. Select Address Book \t");
             System.out.print("3. Add contact \t");
             System.out.print("4. Edit contact \t");
             System.out.print("5. Delete contact \t");
-            System.out.print("6. Display contacts \t");
+            System.out.print("6. Display contacts \n");
             System.out.print("7. Display Address Books \t");
             System.out.print("8. Search Person by City or State \t");
-            System.out.println("9. Exit");
+            System.out.print("9. View Persons by City or State \t");
+            System.out.print("10. Get Count by City or State \t");
+            System.out.println("11. Exit");
 
             int choice = scanner.nextInt();
 
@@ -76,7 +78,10 @@ public class AddressBookMain {
                     searchAndDisplayPersonByCityOrState(addressBooks, scanner);
                     break;
                 case VIEW_PERSONS_CITY_STATE:
-                    viewPersonsByCityOrState(addressBooks, scanner);
+                    handleViewPersonsByCityOrState(addressBooks, scanner);
+                    break;
+                case GET_COUNT_BY_CITY_STATE:
+                    handleGetCountByCityOrState(addressBooks, scanner);
                     break;
                 case EXIT:
                     System.out.println("Exiting !");
@@ -310,29 +315,66 @@ public class AddressBookMain {
     /*
      * @name: viewPersonsByCityOrState
      * @desc: view persons by city or state using dictionaries
-     * @param: addressBooks, scanner
+     * @param: addressBooks, scanner, byState (true if viewing by state, false if viewing by city)
      * @return: void
      */
-    private static void viewPersonsByCityOrState(Map<String, AddressBook> addressBooks, Scanner scanner) {
-        System.out.print("Enter City or State to view persons: ");
-        String cityOrState = scanner.next();
+    private static void viewPersonsByCityOrState(Map<String, AddressBook> addressBooks, String cityOrState, boolean byState) {
+        System.out.print("Enter " + (byState ? "State" : "City") + " to view persons: ");
 
         List<Contact> persons = new ArrayList<>();
 
         for (AddressBook addressBook : addressBooks.values()) {
-            if (addressBook.getCityDictionary().containsKey(cityOrState)) {
-                persons.addAll(addressBook.getCityDictionary().get(cityOrState));
-            }
-
-            if (addressBook.getStateDictionary().containsKey(cityOrState)) {
+            if (byState && addressBook.getStateDictionary().containsKey(cityOrState)) {
                 persons.addAll(addressBook.getStateDictionary().get(cityOrState));
+            } else if (!byState && addressBook.getCityDictionary().containsKey(cityOrState)) {
+                persons.addAll(addressBook.getCityDictionary().get(cityOrState));
             }
         }
 
         if (!persons.isEmpty()) {
             displayContacts(persons);
         } else {
-            System.out.println("No persons found in the specified city or state.");
+            System.out.println("No persons found in the specified " + (byState ? "state" : "city") + ".");
         }
     }
+
+
+    private static void handleViewPersonsByCityOrState(Map<String, AddressBook> addressBooks, Scanner scanner) {
+        System.out.print("Choose by State (1) or City (2): ");
+        int choice = scanner.nextInt();
+        System.out.print("Enter City or State to get count: ");
+        String cityOrState = scanner.next();
+        boolean byState = (choice == 1);
+        viewPersonsByCityOrState(addressBooks, cityOrState, byState);
+    }
+    /*
+     * @name: getCountByCityOrState
+     * @desc: get the count of contact persons by city or state across multiple address books
+     * @param: addressBooks, cityOrState, byState (true if counting by state, false if counting by city)
+     * @return: int - count of contact persons
+     */
+    private static int getCountByCityOrState(Map<String, AddressBook> addressBooks, String cityOrState, boolean byState) {
+        return (int) addressBooks.values().stream()
+                .flatMap(addressBook -> addressBook.getContacts().stream())
+                .filter(contact -> (byState ? contact.getState() : contact.getCity()).equalsIgnoreCase(cityOrState))
+                .count();
+    }
+
+    /*
+     * @name: handleGetCountByCityOrState
+     * @desc: handle the get count operation by city or state
+     * @param: addressBooks, scanner
+     * @return: void
+     */
+    private static void handleGetCountByCityOrState(Map<String, AddressBook> addressBooks, Scanner scanner) {
+        System.out.print("Choose by State (1) or City (2): ");
+        int choice = scanner.nextInt();
+        System.out.print("Enter City or State to get count: ");
+        String cityOrState = scanner.next();
+        boolean byState = (choice == 1);
+        int count = getCountByCityOrState(addressBooks, cityOrState, byState);
+
+        System.out.println("Count of contact persons by " + (byState ? "State" : "City") + " '" + cityOrState + "': " + count);
+    }
+
 }
