@@ -18,7 +18,9 @@ public class AddressBookMain {
     private static final int SEARCH_PERSON_CITY_STATE = 8;
     private static final int VIEW_PERSONS_CITY_STATE = 9;
     private static final int GET_COUNT_BY_CITY_STATE =10 ;
-    private static final int EXIT = 11;
+    private static final int SORT_BY_NAME = 11;
+    private static final int EXIT = 12;
+
 
 
     public static void main(String[] args) {
@@ -41,7 +43,8 @@ public class AddressBookMain {
             System.out.print("8. Search Person by City or State \t");
             System.out.print("9. View Persons by City or State \t");
             System.out.print("10. Get Count by City or State \t");
-            System.out.println("11. Exit");
+            System.out.print("11. Sort by Name and Display\t");
+            System.out.println("12. Exit");
 
             int choice = scanner.nextInt();
 
@@ -82,6 +85,10 @@ public class AddressBookMain {
                     break;
                 case GET_COUNT_BY_CITY_STATE:
                     handleGetCountByCityOrState(addressBooks, scanner);
+                    break;
+                case SORT_BY_NAME:
+                    assert currentAddressBook != null;
+                    sortContactsByName(currentAddressBook.getContacts());
                     break;
                 case EXIT:
                     System.out.println("Exiting !");
@@ -375,6 +382,18 @@ public class AddressBookMain {
         int count = getCountByCityOrState(addressBooks, cityOrState, byState);
 
         System.out.println("Count of contact persons by " + (byState ? "State" : "City") + " '" + cityOrState + "': " + count);
+    }
+
+    /*
+     * @name: sortContactsByName
+     * @desc: sort contacts alphabetically by person's name
+     * @param: contacts
+     * @return: void
+     */
+    private static void sortContactsByName(List<Contact> contacts) {
+        contacts.sort(Contact::compareTo);
+        System.out.println("Contacts sorted alphabetically by name:");
+        displayContacts(contacts);
     }
 
 }

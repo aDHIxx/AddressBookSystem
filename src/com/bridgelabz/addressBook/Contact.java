@@ -6,7 +6,7 @@ import java.util.Objects;
  * @name: Contact
  * @desc: class to store contact details
  */
-class Contact {
+class Contact implements Comparable<Contact> {
     private String firstName;
     private String lastName;
     private String address;
@@ -94,6 +94,12 @@ class Contact {
         Contact contact = (Contact) obj;
         return Objects.equals(firstName, contact.firstName) &&
                 Objects.equals(lastName, contact.lastName);
+    }
+    @Override
+    public int compareTo(Contact other) {
+        String thisName = this.getFirstName() + " " + this.getLastName();
+        String otherName = other.getFirstName() + " " + other.getLastName();
+        return thisName.compareToIgnoreCase(otherName);
     }
 }
 
