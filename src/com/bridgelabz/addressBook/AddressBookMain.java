@@ -1,5 +1,6 @@
 package com.bridgelabz.addressBook;
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,11 +19,12 @@ public class AddressBookMain {
     private static final int PRINT_ADDRESS_BOOKS = 7;
     private static final int SEARCH_PERSON_CITY_STATE = 8;
     private static final int VIEW_PERSONS_CITY_STATE = 9;
-    private static final int GET_COUNT_BY_CITY_STATE =10 ;
+    private static final int GET_COUNT_BY_CITY_STATE = 10;
     private static final int SORT_BY_NAME = 11;
-    private static final int SORT_MENU = 12 ;
-    private static final int EXIT = 13;
-
+    private static final int SORT_MENU = 12;
+    private static final int READ_FROM_FILE = 13;
+    private static final int WRITE_TO_FILE = 14;
+    private static final int EXIT = 15;
 
 
     public static void main(String[] args) {
@@ -43,9 +45,12 @@ public class AddressBookMain {
             System.out.print("7. Display Address Books \t");
             System.out.print("8. Search Person by City or State \t");
             System.out.print("9. View Persons by City or State \t");
-            System.out.print("10. Get Count by City or State \t");
+            System.out.print("10. Get Count by City or State \n");
             System.out.print("11. Sort by Name and Display\t");
-            System.out.println("12. Exit");
+            System.out.print("12. Sort Menu \t");
+            System.out.print("13. Read from File \t");
+            System.out.print("14. Write to File \t");
+            System.out.println("15. Exit");
 
             int choice = scanner.nextInt();
 
@@ -73,6 +78,7 @@ public class AddressBookMain {
                     deleteContact(currentAddressBook, scanner);
                     break;
                 case DISPLAY_CONTACTS:
+                    assert currentAddressBook != null;
                     displayContacts(currentAddressBook.getContacts());
                     break;
                 case PRINT_ADDRESS_BOOKS:
@@ -94,6 +100,14 @@ public class AddressBookMain {
                 case SORT_MENU:
                     handleSortMenu(currentAddressBook);
                     break;
+                case READ_FROM_FILE:
+                    assert currentAddressBook != null;
+                    readFromFile(currentAddressBook);
+                    break;
+                case WRITE_TO_FILE:
+                    assert currentAddressBook != null;
+                    writeToFile(currentAddressBook);
+                    break;
                 case EXIT:
                     System.out.println("Exiting !");
                     System.exit(0);
@@ -103,6 +117,7 @@ public class AddressBookMain {
             }
         }
     }
+
     /*
      @name: printAvailableAddressBooks
      @desc: print available address books
@@ -120,6 +135,7 @@ public class AddressBookMain {
             System.out.println("=================================");
         }
     }
+
     /*
      @name: printAvailableAddressBooks
      @desc: print available address books
@@ -132,6 +148,7 @@ public class AddressBookMain {
             System.out.println(addressBookName);
         }
     }
+
     /*
      @name: addAddressBook
      @desc: add address book
@@ -143,13 +160,14 @@ public class AddressBookMain {
         String addressBookName = scanner.next();
 
         if (!addressBooks.containsKey(addressBookName)) {
-            AddressBook newAddressBook = new AddressBook();
+            AddressBook newAddressBook = new AddressBook(addressBookName); // Pass the name
             addressBooks.put(addressBookName, newAddressBook);
             System.out.println("Address Book '" + addressBookName + "' added successfully!");
         } else {
             System.out.println("Address Book with the same name already exists.");
         }
     }
+
     /*
      @name: selectAddressBook
      @desc: select address book
@@ -170,6 +188,7 @@ public class AddressBookMain {
 
         return selectedAddressBook;
     }
+
     /*
      @name: addContact
      @desc: add contact
@@ -207,6 +226,7 @@ public class AddressBookMain {
             }
         }
     }
+
     /*
      @name: editContact
      @desc: edit contact
@@ -250,6 +270,7 @@ public class AddressBookMain {
             System.out.println("Contact not found.");
         }
     }
+
     /*
      @name: deleteContact
      @desc: delete contact
@@ -271,6 +292,7 @@ public class AddressBookMain {
             System.out.println("Contact not found.");
         }
     }
+
     /*
      @name: displayContacts
      @desc: display contacts
@@ -290,6 +312,7 @@ public class AddressBookMain {
             System.out.println("----------------------------------------------------------------------");
         }
     }
+
     /*
     @name: getContactByName
     @desc: get contact by name
@@ -323,6 +346,7 @@ public class AddressBookMain {
 
         displayContacts(searchResult);
     }
+
     /*
      * @name: viewPersonsByCityOrState
      * @desc: view persons by city or state using dictionaries
@@ -358,6 +382,7 @@ public class AddressBookMain {
         boolean byState = (choice == 1);
         viewPersonsByCityOrState(addressBooks, cityOrState, byState);
     }
+
     /*
      * @name: getCountByCityOrState
      * @desc: get the count of contact persons by city or state across multiple address books
@@ -437,6 +462,7 @@ public class AddressBookMain {
                 System.out.println("Invalid sorting option.");
         }
     }
+
     /*
      * @name: sortContactsByCity
      * @desc: sort contacts alphabetically by city
@@ -471,5 +497,61 @@ public class AddressBookMain {
         contacts.sort(Comparator.comparingInt(Contact::getZip));
         System.out.println("Contacts sorted numerically by ZIP:");
         displayContacts(contacts);
+    }
+
+    /*
+     * @name: readFromFile
+     * @desc: read persons' contacts from a text file
+     * @param: currentAddressBook
+     * @return: void
+     */
+    private static void readFromFile(AddressBook currentAddressBook) {
+        final String FILE_PATH_BASE = "C:\\Users\\Lenovo\\Desktop\\Bridgelabz-GE\\AddressBook\\files\\";
+        System.out.print("Enter the file to read from: ");
+        String filePath = scanner.next();
+        filePath = FILE_PATH_BASE + filePath + ".txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] contactDetails = line.split(",");
+                Contact contact = new Contact(contactDetails[0], contactDetails[1], contactDetails[2],
+                        contactDetails[3], contactDetails[4], Integer.parseInt(contactDetails[5]),
+                        Long.parseLong(contactDetails[6]), contactDetails[7]);
+
+                currentAddressBook.addContact(contact);
+            }
+            System.out.println("Contacts read from file successfully!");
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error reading from file: " + e.getMessage());
+        }
+    }
+
+    /*
+     * @name: writeToFile
+     * @desc: write persons' contacts to a text file
+     * @param: currentAddressBook
+     * @return: void
+     */
+    private static void writeToFile(AddressBook currentAddressBook) {
+        final String FILE_PATH_BASE = "C:\\Users\\Lenovo\\Desktop\\Bridgelabz-GE\\AddressBook\\files\\";
+        if (currentAddressBook != null) {
+            String addressBookName = currentAddressBook.getName();
+            String filePath = FILE_PATH_BASE + addressBookName + ".txt";
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                List<Contact> contacts = currentAddressBook.getContacts();
+                for (Contact contact : contacts) {
+                    String line = contact.getFirstName() + "," + contact.getLastName() + "," +
+                            contact.getAddress() + "," + contact.getCity() + "," + contact.getState() + "," +
+                            contact.getZip() + "," + contact.getPhoneNumber() + "," + contact.getEmail();
+                    writer.write(line);
+                    writer.newLine();
+                }
+                System.out.println("Contacts written to file successfully!");
+            } catch (IOException e) {
+                System.out.println("Error writing to file: " + e.getMessage());
+            }
+        }
+
     }
 }

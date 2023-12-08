@@ -1,5 +1,6 @@
 package com.bridgelabz.addressBook;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,17 +10,21 @@ import java.util.Map;
  * @name: AddressBook
  * @desc: class to store contacts
  */
-class AddressBook {
+class AddressBook implements Serializable {
+    private String name;
+
+    private static final long serialVersionUID = 1L;
+
     private List<Contact> contacts;
     private Map<String, List<Contact>> cityDictionary;
     private Map<String, List<Contact>> stateDictionary;
-
 
     /*
      @name: com.bridgelabz.addressBook.AddressBook
      @desc: Constructor to initialize contacts
      */
-    public AddressBook() {
+    public AddressBook(String addressBookName) {
+        this.name=addressBookName;
         contacts = new ArrayList<>();
         cityDictionary = new HashMap<>();
         stateDictionary = new HashMap<>();
@@ -53,6 +58,7 @@ class AddressBook {
     public List<Contact> getContacts() {
         return contacts;
     }
+
     /*
      @name: editContact
      @desc: edit contact
@@ -68,6 +74,7 @@ class AddressBook {
             System.out.println("Contact not found.");
         }
     }
+
     /*
      @name: deleteContact
      @desc: delete contact
@@ -91,4 +98,12 @@ class AddressBook {
         return stateDictionary;
     }
 
+    /*
+     * @name: getName
+     * @desc: get name of the address book
+     * @return: name
+     */
+    public String getName() {
+        return name;
+    }
 }

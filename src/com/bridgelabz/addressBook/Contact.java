@@ -1,12 +1,16 @@
 package com.bridgelabz.addressBook;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 /*
  * @name: Contact
  * @desc: class to store contact details
  */
-class Contact implements Comparable<Contact> {
+class Contact implements Comparable<Contact>, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String firstName;
     private String lastName;
     private String address;
